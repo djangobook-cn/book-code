@@ -1,0 +1,53 @@
+{% extends 'website/frontend/frontend_base.html' %}
+{% load static %}
+
+
+{% block title %}
+    碎碎念
+{% endblock %}
+
+{% block external_header %}
+    <script type="text/javascript" src="{% static 'js/timeline.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/timeline.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+{% endblock %}
+
+{% block left %}
+    <div class="col-md-12 timelinebox">
+        <div class="timeline animated">
+            {% for mood in mood_list %}
+                <div class="timeline-row">
+                    <div class="timeline-time"><small>{{ mood.create_time|date:"Y-m-d" }}</small>{{ mood.create_time|time:"H:i:s" }}</div>
+                    <div class="timeline-icon">
+                        {% if mood.mood_type == 'T' %}
+                            <div class="bg-primary"><i class="fa fa-pencil"></i></div>
+                        {% elif mood.mood_type == 'B' %}
+                            <div class="bg-warning"><i class="fa fa-quote-right"></i></div>
+                        {% elif mood.mood_type == 'I' %}
+                            <div class="bg-info"><i class="fa fa-camera"></i></div>
+                        {% endif %}
+                    </div>
+                    <div class="panel timeline-content">
+                        <div class="panel-body">
+                            {% if mood.title %}
+                                <h2>{{ mood.title }}</h2>
+                            {% endif %}
+                            {% if mood.mood_type == 'B' %}
+                                <blockquote>
+                                    <p>{{ mood.content }}</p>
+                                </blockquote>
+                            {% elif mood.mood_type == 'I' %}
+                                <a href="{% get_media_prefix %}{{ mood.image }}" target="_blank">
+                                    <img class="img-responsive" src="{{ mood.get_small_image_url }}" />
+                                </a>
+                                <p>{{ mood.content }}</p>
+                            {% else %}
+                                <p>{{ mood.content }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

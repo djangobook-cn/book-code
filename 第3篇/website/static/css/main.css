@@ -1,0 +1,65 @@
+body {
+    background-color: #eeeeee;
+    font-family: "Segoe UI", "Microsoft YaHei UI", sans-serif, "Segoe MDL2 Assets", "Symbols";
+}
+
+.front-header {
+    background-color: #2980b9;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+.front-footer {
+    background-color: #3498db;
+    padding-top: 30px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.contact-info {
+    font-size: 22px;
+}
+
+.contact-info a {
+    color: white;
+}
+
+.copy-right p {
+    font-size: 15px;
+}
+
+.article {
+    background-color: white;
+    padding: 20px 30px;
+    margin-bottom: 40px;
+    box-shadow: #cccccc 5px 5px 20px;
+}
+
+.timelinebox {
+    background-color: white;
+    padding: 20px 30px;
+    margin-bottom: 40px;
+    box-shadow: #cccccc 5px 5px 20px;
+}
+
+.article img {
+    max-width: 100%;
+}
+
+.category-header {
+    color: #2980b9;
+}
+
+.category p {
+    font-size: 16px;
+}
+
+.personal-info li {
+    font-size: 16px;
+}
+
+a:hover {
+    text-decoration: none;
+}

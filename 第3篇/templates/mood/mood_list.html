@@ -1,0 +1,96 @@
+{% extends 'website/backend/backend_base.html' %}
+{% load static %}
+
+{% block option-title %}
+    碎碎念列表
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <table class="table table-hover table-responsive table-condensed dashboard-table">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>标题</th>
+                    <th>类型</th>
+                    <th>发布时间</th>
+                    <th>内容</th>
+                    <th>图片</th>
+                    <th>动作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in mood_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.get_mood_type_display }}</td>
+                        <td>{{ item.create_time }}</td>
+                        <td>{{ item.content }}</td>
+                        <td>
+                            {% if item.mood_type == 'I' %}
+                                <button data-url="{% get_media_prefix%}{{ item.image }}" class="btn btn-info photo-view" role="button" >查看</button>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'mood-update' item.pk %}" class="btn btn-warning" role="button">修改</a>
+                            &emsp;
+                            <button class="btn btn-danger" role="button" data-id="{{ item.id }}">删除</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="photo-modal" role="dialog" aria-labelledby="photo-modal">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">查看图片</h4>
+                </div>
+                <div class="modal-body">
+                    <img src="" alt="" id="view-photo" width="100%">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'utils/modal.html' %}
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $('.btn-danger').on('click',
+            function (e) {
+                e.preventDefault();
+                var dom_item = this;
+                $.ajax({
+                    type:"POST",
+                    dataType:'json',
+                    data:{},
+                    url:'{% url "mood-delete" 00 %}'.replace('0', this.dataset['id']),
+                    success:function(data){
+                        var state = data.state;
+                        if(state === 'success'){
+                            dom_item.parentElement.parentElement.setAttribute('hidden','');
+                            showModal('success', "删除成功！")
+                        }
+                    },
+                    error:function(data){
+                        alert(data);
+                    }
+                });
+            })
+    </script>
+    <script type="text/javascript">
+        $('.photo-view').on('click', function(e) {
+            var dom_item = this;
+            var photo_item = $('#view-photo');
+            photo_item.attr('src', dom_item.dataset['url']);
+            $('#photo-modal').modal();
+        })
+    </script>
+{% endblock %}

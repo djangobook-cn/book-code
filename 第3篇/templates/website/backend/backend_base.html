@@ -1,0 +1,54 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+
+{% block title %}管理后台{% endblock %}
+
+{% block external_header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery.form.js' %}"></script>
+    <script charset="utf-8" src="{% static 'kindeditor/kindeditor-all-min.js' %}"></script>
+    <script charset="utf-8" src="{% static 'kindeditor/lang/zh-CN.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">后台管理</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">主页</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            {% include 'website/backend/nav.html' %}
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">{% block option-title %}{% endblock %}</h1>
+            <div class="row placeholders">
+                {% block content %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block external_js %}
+    <script>
+        $('#{{ active_page }}').addClass("active");
+    </script>
+{% block js %}{% endblock %}
+{% endblock %}

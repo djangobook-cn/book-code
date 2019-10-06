@@ -1,0 +1,29 @@
+{% load custom_template_tag %}
+<div class="col-md-12">
+    {% for article in article_list %}
+        <div class="col-md-12 col-xs-12 article">
+            <div class="col-md-12 col-xs-12">
+                <h2><a href="{% url 'blog-detail' article.id %}">{{ article.title }}</a></h2>
+                <p><small><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>{{ article.publish_time|date:"Y-m-d" }}&nbsp;{{ article.publish_time|time:"H:i" }}</small></p>
+
+                <blockquote>
+                    <p class="text-danger">原创文章，转载请注明出处和作者。</p>
+                </blockquote>
+            </div>
+            <div class="col-md-12 col-xs-12">
+                {% markdown2html article.summary as content %}
+                {{ content|safe }}
+                <hr>
+            </div>
+
+            <div class="col-md-6 col-xs-6">
+                <a href="{% url 'category-article-list' article.category.id %}"><span class="label label-default"><span class="text-left"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&emsp;{{ article.category }}</span></span></a>
+            </div>
+            <div class="col-md-6 text-right col-xs-6">
+                <a role="button" class="btn btn-info btn-xs" href="{% url 'blog-detail' article.id %}"><span class="glyphicon glyphicon-console" aria-hidden="true"></span>&emsp;查看详情</a>
+            </div>
+        </div>
+    {% endfor %}
+    {% include 'utils/pagination.html' %}
+
+</div>

@@ -1,0 +1,25 @@
+<div class="col-md-12 article">
+    <div class="col-md-12 text-center">
+        <h2 class="category-header">友链</h2>
+        <hr>
+    </div>
+    <div class="col-md-12">
+        <ul class="list-unstyled">
+            {% for link in link_list %}
+                <li>
+                    <a href="{{ link.url }}" target="_blank" title="{{ link.title }}">
+                        <p>
+                            <span class="text-left">
+                                >&nbsp;{{ link.name }}
+                            </span>
+                        </p>
+                    </a>
+                </li>
+            {% empty %}
+                <li>
+                    暂无连接
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

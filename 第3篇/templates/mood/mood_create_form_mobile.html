@@ -1,0 +1,82 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+
+{% block title %}{% endblock %}
+
+{% block external_header %}
+    <script type="text/javascript" src="{% static 'js/jquery.form.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    {% include 'website/frontend/header.html' %}
+    <div class="main-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 left-content">
+                    <div class="col-md-12 article">
+                        <form class="form-horizontal" id="data-form">
+                            <div class="form-group">
+                                <label for="title" class="col-sm-1 control-label">标题：</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="title" name="title" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="mood_type" class="col-sm-1 control-label">类型：</label>
+                                <div class="col-sm-9">
+                                    <select name="mood_type" id="mood_type" class="form-control">
+                                        <option value="T">文字</option>
+                                        <option value="I">图文</option>
+                                        <option value="B">引用</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="content" class="col-sm-1 control-label">内容：</label>
+                                <div class="col-sm-9">
+                                    <textarea name="content" id="content" rows="5" wrap="hard" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="img" class="col-sm-1 control-label">配图：</label>
+                                <div class="col-sm-3">
+                                    <input type="file" id="image" name="image" class="form-control">
+                                </div>
+                            </div>
+                            <button class="btn btn-info" id="submit-btn">添加</button>
+                            <input type="reset" name="reset" style="display: none;">
+                        </form>
+                    </div>
+                </div>
+                {% include 'utils/modal.html' %}
+            </div>
+        </div>
+    </div>
+    {% include 'website/frontend/footer.html' %}
+{% endblock %}
+
+{% block external_js %}
+<script type="text/javascript">
+    $('#submit-btn').click(function(e){
+            e.preventDefault();
+            var options = {
+                type:"POST",
+                dataType:'json',
+                url:'{% url "mood-add" %}',
+                success:function(data){
+                    var state = data.state;
+                        if(state === 'success'){
+                            showModal('success', "添加成功");
+                        } else {
+                            showModal('danger', "添加失败");
+                        }
+                        $('input[type=reset]').trigger('click');
+                },
+                error:function(data){
+                    console.log(data);
+                }
+            };
+            $('#data-form').ajaxSubmit(options);
+        });
+</script>
+{% endblock %}

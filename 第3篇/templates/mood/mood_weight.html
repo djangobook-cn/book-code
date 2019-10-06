@@ -1,0 +1,26 @@
+{% load static %}
+<div class="col-md-12 article">
+    <div class="col-md-12 text-center">
+        <h2 class="category-header">碎碎念</h2>
+        <hr>
+    </div>
+    <div class="col-md-12">
+        {% if mood.mood_type == 'T' %}
+            <p>{{ mood.content }}</p>
+        {% elif mood.mood_type == 'I' %}
+            <a href="{% get_media_prefix %}{{ mood.image }}" target="_blank">
+                <img class="img-responsive" src="{{ mood.get_small_image_url }}" />
+            </a>
+            <p>{{ mood.content }}</p>
+        {% else %}
+            <blockquote><p>{{ mood.content }}</p></blockquote>
+        {% endif %}
+    </div>
+    <div class="col-md-12">
+        <p class="text-right"><small>{{ mood.create_time|date:"Y-m-d" }}&nbsp;{{ mood.create_time|time:"H:i:s" }}</small></p>
+    </div>
+    <div class="col-md-12 text-right">
+        <hr>
+        <a role="button" class="btn btn-warning" href="{% url 'mood-time-line' %}">更多</a>
+    </div>
+</div>

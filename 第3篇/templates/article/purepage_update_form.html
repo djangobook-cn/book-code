@@ -1,0 +1,66 @@
+{% extends 'website/backend/backend_base.html' %}
+
+{% block option-title %}
+    添加静态页面
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <form class="form-horizontal" id="data-form">
+            <div class="form-group">
+                <label for="title" class="col-sm-1 control-label">标题：</label>
+                <div class="col-sm-9">
+                    <input type="text" id="title" name="title" class="form-control" required value="{{ page.title }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="editor_id" class="col-sm-1 control-label">内容：</label>
+                <div class="col-sm-9">
+                    <textarea id="editor_id" name="content" style="width:100%;height:300px;">
+                        {{ page.content|safe }}
+                    </textarea>
+                </div>
+            </div>
+
+            <script>
+                    KindEditor.ready(function(K) {
+                            window.editor = K.create('#editor_id', {
+                                'uploadJson':'{% url 'image-upload' %}',
+                        });
+                    });
+            </script>
+
+            <button class="btn btn-info" id="submit-btn">修改</button>
+            <input type="reset" name="reset" style="display: none;">
+        </form>
+    </div>
+    {% include 'utils/modal.html' %}
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $('#submit-btn').click(function(e){
+            editor.sync();
+            e.preventDefault();
+            var options = {
+                type:"POST",
+                dataType:'json',
+                url:'{% url "pure-page-update" page.pk %}',
+                success:function(data){
+                    var state = data.state;
+                        if(state === 'success'){
+                            showModal('success', "修改成功");
+                        } else {
+                            showModal('danger', "修改失败");
+                        }
+                },
+                error:function(data){
+                    console.log(data);
+                }
+            };
+            $('#data-form').ajaxSubmit(options);
+        });
+    </script>
+
+
+{% endblock %}
